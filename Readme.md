@@ -66,7 +66,7 @@ $$\text{Epochs} = \frac{\text{Steps} \times \text{Batch Size}}{\text{Dataset Siz
 
 ## 📂 文件清单说明
 
-*   `app.py`: Gradio 推理前端脚本。
+*   `app.py`: Gradio 推理前端脚本。（app(1).py为linux版推理脚本）
 *   `train_whisper.py`: 基于 Transformers 库的微调主程序。
 *   `requirements.txt`: 项目依赖列表。
 *   `assets/`: 存放运行截图及架构图。
