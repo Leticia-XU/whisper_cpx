@@ -1,0 +1,27 @@
+# --- 核心深度学习框架 ---
+torch>=2.0.0
+torchvision
+torchaudio
+
+# --- Hugging Face 模型生态 ---
+transformers>=4.35.0
+diffusers
+accelerate
+evaluate
+datasets
+bitsandbytes
+safetensors
+
+# --- 音频处理必备 ---
+librosa
+soundfile
+jiwer
+
+# --- 网页交互界面 ---
+gradio>=4.0.0
+
+# --- 实用工具 ---
+numpy
+pandas
+scipy
+tqdm
