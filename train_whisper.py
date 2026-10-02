@@ -1,4 +1,4 @@
-import os
+﻿import os
 import torch
 import pandas as pd
 from datasets import Dataset, Audio, DatasetDict
@@ -99,8 +99,8 @@ data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=processor)
 # ================= 6. 训练参数 (H100 优化版) =================
 training_args = Seq2SeqTrainingArguments(
     output_dir="./whisper-putian-finetuned",
-    per_device_train_batch_size=128,      # H100 80G 显存直接拉满到 64 甚至更多
-    gradient_accumulation_steps=1, 
+    per_device_train_batch_size=4,       # RTX 5060 8GB，小 batch 防止 OOM
+    gradient_accumulation_steps=16,      # 梯度累积 16 步，等效 batch=64
     learning_rate=1e-5,
     warmup_steps=100,
     max_steps=300,                      # 1小时数据建议跑 1000-1500 步
@@ -109,7 +109,7 @@ training_args = Seq2SeqTrainingArguments(
     save_total_limit=3,           # 只保留最新的 3 个存档，省硬盘空间
     gradient_checkpointing=True,
     fp16=False,
-    bf16=True,                           # H100 核心加速模式
+    bf16=True,                           # RTX 5060 Blackwell 架构支持 bf16
     save_strategy="steps",
     eval_strategy="steps",
     per_device_eval_batch_size=16,
@@ -117,7 +117,7 @@ training_args = Seq2SeqTrainingArguments(
     generation_max_length=225,
     logging_steps=25,
     report_to=["tensorboard"],
-    dataloader_num_workers=4,             # 多线程加载数据，防止卡 CPU
+    dataloader_num_workers=2,             # RTX 5060 适当降低线程数
     load_best_model_at_end=True,  # 训练结束自动加载表现最好的那个模型
     metric_for_best_model="eval_loss", # 以验证集损失作为评判标准
     remove_unused_columns=False, # 必须为 False
